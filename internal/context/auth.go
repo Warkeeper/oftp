@@ -81,6 +81,11 @@ func Toggle(options *ToggleOptions) macaron.Handler {
 				c.Title("auth.active_your_account")
 				c.Success("user/auth/activate")
 				return
+			} else if conf.Auth.RequireTwoFactor && !database.Handle.TwoFactors().IsEnabled(c.Req.Context(), c.User.ID) {
+				if "/user/settings/security/two_factor_enable" != c.Context.Req.URL.Path {
+					c.Redirect("/user/settings/security/two_factor_enable")
+					return
+				}
 			}
 		}
 

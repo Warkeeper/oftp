@@ -246,6 +246,7 @@ type AuthOpts struct {
 	ActivateCodeLives         int
 	ResetPasswordCodeLives    int
 	RequireEmailConfirmation  bool
+	RequireTwoFactor          bool
 	RequireSigninView         bool
 	DisableRegistration       bool
 	EnableRegistrationCaptcha bool
