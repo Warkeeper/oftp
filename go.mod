@@ -1,11 +1,11 @@
 module gogs.io/gogs
 
-go 1.24
+go 1.24.0
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
 	github.com/derision-test/go-mockgen v1.3.7
-	github.com/editorconfig/editorconfig-core-go/v2 v2.6.3
+	github.com/editorconfig/editorconfig-core-go/v2 v2.6.4
 	github.com/go-ldap/ldap/v3 v3.4.11
 	github.com/go-macaron/binding v1.2.0
 	github.com/go-macaron/cache v0.0.0-20190810181446-10f7c57e2196
@@ -122,7 +122,7 @@ require (
 	go.opentelemetry.io/otel v1.11.0 // indirect
 	go.opentelemetry.io/otel/trace v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
-	golang.org/x/mod v0.25.0 // indirect
+	golang.org/x/mod v0.31.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.5 // indirect
