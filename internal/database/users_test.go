@@ -425,6 +425,20 @@ func usersCreate(t *testing.T, ctx context.Context, s *UsersStore) {
 		assert.Equal(t, wantErr, err)
 	})
 
+	t.Run("email already exists even when unverified", func(t *testing.T) {
+		charlie, err := s.Create(ctx, "charlie", "charlie@example.com", CreateUserOptions{})
+		require.NoError(t, err)
+		assert.False(t, charlie.IsActive)
+
+		_, err = s.Create(ctx, "david", charlie.Email, CreateUserOptions{})
+		wantErr := ErrEmailAlreadyUsed{
+			args: errutil.Args{
+				"email": charlie.Email,
+			},
+		}
+		assert.Equal(t, wantErr, err)
+	})
+
 	user, err := s.GetByUsername(ctx, alice.Name)
 	require.NoError(t, err)
 	assert.Equal(t, s.db.NowFunc().Format(time.RFC3339), user.Created.UTC().Format(time.RFC3339))

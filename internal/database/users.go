@@ -292,7 +292,7 @@ func (err ErrEmailAlreadyUsed) Error() string {
 // Create creates a new user and persists to database. It returns
 // ErrNameNotAllowed if the given name or pattern of the name is not allowed as
 // a username, or ErrUserAlreadyExist when a user with same name already exists,
-// or ErrEmailAlreadyUsed if the email has been verified by another user.
+// or ErrEmailAlreadyUsed if the email has been used by another user.
 func (s *UsersStore) Create(ctx context.Context, username, email string, opts CreateUserOptions) (*User, error) {
 	err := isUsernameAllowed(username)
 	if err != nil {
@@ -308,6 +308,18 @@ func (s *UsersStore) Create(ctx context.Context, username, email string, opts Cr
 	}
 
 	email = strings.ToLower(strings.TrimSpace(email))
+	if s.db.WithContext(ctx).
+		Select("id").
+		Where("type = ? AND email = ?", UserTypeIndividual, email).
+		First(&User{}).
+		Error == nil {
+		return nil, ErrEmailAlreadyUsed{
+			args: errutil.Args{
+				"email": email,
+			},
+		}
+	}
+
 	_, err = s.GetByEmail(ctx, email)
 	if err == nil {
 		return nil, ErrEmailAlreadyUsed{
